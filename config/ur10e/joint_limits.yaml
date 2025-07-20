@@ -8,6 +8,16 @@
 #    https://www.universal-robots.com/articles/ur-articles/max-joint-torques
 #    retrieved: 2020-06-16, last modified: 2020-06-09
 joint_limits:
+  prismatic_joint:
+    # acceleration limits are not publicly available
+    has_acceleration_limits: false
+    has_effort_limits: true
+    has_position_limits: true
+    has_velocity_limits: true
+    max_effort: 330.0
+    max_velocity: !meters  120.0
+    max_position: !meters  0.0
+    min_position: !meters 1.0
   shoulder_pan_joint:
     # acceleration limits are not publicly available
     has_acceleration_limits: false

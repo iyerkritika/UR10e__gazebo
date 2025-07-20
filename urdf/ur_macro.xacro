@@ -147,7 +147,20 @@
     <!-- Placeholder for ros2_control transmission which don't yet exist -->
 
     <!-- links -  main serial chain -->
-    <link name="${tf_prefix}base_link"/>
+    <link name="${tf_prefix}base_link">
+          <inertial>
+        <mass value="${shoulder_mass}"/>
+        <origin rpy="${shoulder_inertia_rotation}" xyz="${shoulder_cog}"/>
+        <inertia
+            ixx="${shoulder_inertia_ixx}"
+            ixy="${shoulder_inertia_ixy}"
+            ixz="${shoulder_inertia_ixz}"
+            iyy="${shoulder_inertia_iyy}"
+            iyz="${shoulder_inertia_iyz}"
+            izz="${shoulder_inertia_izz}"
+        />
+      </inertial> 
+    </link>
     <link name="${tf_prefix}base_link_inertia">
       <visual>
         <origin xyz="0 0 0" rpy="0 0 ${pi}"/>
@@ -339,7 +352,7 @@
     </joint>
 
     <!-- joints - main serial chain -->
-    <joint name="${tf_prefix}base_link-base_link_inertia" type="fixed">
+    <joint name="${tf_prefix}prismatic_joint" type="prismatic">
       <parent link="${tf_prefix}base_link" />
       <child link="${tf_prefix}base_link_inertia" />
       <!-- 'base_link' is REP-103 aligned (so X+ forward), while the internal
@@ -347,8 +360,12 @@
            Use the joint between 'base_link' and 'base_link_inertia' (a dummy
            link/frame) to introduce the necessary rotation over Z (of pi rad).
       -->
+       <limit lower="0.0" upper="1.0" effort="10" velocity="10"/>
+      <dynamics damping="0" friction="0"/>
+      <axis xyz="0 0 1" />
       <origin xyz="0 0 0" rpy="0 0 ${pi}" />
     </joint>
+
     <joint name="${tf_prefix}shoulder_pan_joint" type="revolute">
       <parent link="${tf_prefix}base_link_inertia" />
       <child link="${tf_prefix}shoulder_link" />
