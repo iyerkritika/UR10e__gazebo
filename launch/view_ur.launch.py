@@ -27,13 +27,16 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 # Author: Denis Stogl
-
+import os
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.parameter_descriptions import ParameterValue
+from ament_index_python.packages import get_package_share_directory
+from launch.actions import ExecuteProcess
 
 
 def generate_launch_description():
@@ -156,10 +159,25 @@ def generate_launch_description():
         arguments=["-d", rviz_config_file],
     )
 
+    # Gazebo Sim
+    pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
+    gazebo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
+        launch_arguments={'gz_args': '-r empty.sdf'}.items(),
+    )
+
+    spawn = Node(package='ros_gz_sim', 
+                executable='create',
+                arguments=["-entity", "ur", "-topic", "robot_description"],
+                output='screen')
+
     nodes_to_start = [
+        gazebo,
         joint_state_publisher_node,
         robot_state_publisher_node,
         rviz_node,
+        spawn
     ]
 
     return LaunchDescription(declared_arguments + nodes_to_start)
