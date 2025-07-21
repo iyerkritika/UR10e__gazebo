@@ -22,11 +22,12 @@ if __name__ == "__main__":
     [0,sympy.pi/2,symbols('l5'),symbols('t5')],
     [0,-sympy.pi/2,symbols('l6'),symbols('t6')]
     ])
+    
     # # Substitute example values for all symbols in final_mat
-    # subs_dict = {
-    #     'l1':0.1807,'l2': 0.6127, 'l3': 0.57155, 'l4': 0.17415, 'l5': 0.11985, 'l6': 0.11655,
-    #     'd1': 0.05,'t1':0, 't2': 0, 't3': 0, 't4': 0, 't5': 0, 't6': 0
-    # }
+    subs_dict = {
+        'l1':0.1807,'l2': 0.6127, 'l3': 0.57155, 'l4': 0.17415, 'l5': 0.11985, 'l6': 0.11655,
+        'd1': 0.05,'t1':sympy.pi/2, 't2': sympy.pi/4, 't3': sympy.pi/4, 't4': sympy.pi/4, 't5': sympy.pi/2, 't6': sympy.pi/2
+    }
 
     final_mat = Matrix.eye(4)
     for i in range(dh_params.rows):
@@ -34,7 +35,11 @@ if __name__ == "__main__":
         T = dh_transform(a, alpha, d, t)
         final_mat = simplify(final_mat*T)
 
-    for i in range(final_mat.rows):
-        for j in range(final_mat.cols):
-            print(f"final_mat[{i}][{j}] = {final_mat[i, j]}")
-            input("Press Enter to continue...")  # Pause after each element
+    #setting up for testing inv kinematics
+    print("Final Transformation Matrix:")
+    print(final_mat.evalf(subs=subs_dict))
+
+    # for i in range(final_mat.rows):
+    #     for j in range(final_mat.cols):
+    #         print(f"final_mat[{i}][{j}] = {final_mat[i, j]}")
+    #         input("Press Enter to continue...")  # Pause after each element

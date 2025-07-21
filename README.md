@@ -17,7 +17,7 @@ To visualize the robot install this repository to you workspace by executing:
 ``` bash
 cd <path_to_repo>
 colcon build --symlink-install
-source <path_to_rep0>install/setup.bash 
+source <path_to_repo>install/setup.bash 
 export IGN_GAZEBO_RESOURCE_PATH=<path_to_repo>/install/ur_description/share/
 ```
 After that please execute :
@@ -25,4 +25,8 @@ After that please execute :
 ros2 launch ur_description view_ur.launch.py ur_type:=ur10e
 ```
 
-I have also created a *tf_gen.py* file that calculates the FK given the dh parameters. Through this I have calculated the IK as well 
+I have also created a *tf_gen.py* file that calculates the FK given the dh parameters. Through this I have calculated the IK as well. 
+
+I have not been able to decouple a lot of the angles through IK yet. 
+
+
