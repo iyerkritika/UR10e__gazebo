@@ -36,10 +36,10 @@ if __name__ == "__main__":
         final_mat = simplify(final_mat*T)
 
     #setting up for testing inv kinematics
-    print("Final Transformation Matrix:")
-    print(final_mat.evalf(subs=subs_dict))
+    # print("Final Transformation Matrix:")
+    # print(final_mat.evalf(subs=subs_dict))
 
-    # for i in range(final_mat.rows):
-    #     for j in range(final_mat.cols):
-    #         print(f"final_mat[{i}][{j}] = {final_mat[i, j]}")
-    #         input("Press Enter to continue...")  # Pause after each element
+    for i in range(final_mat.rows):
+        for j in range(final_mat.cols):
+            print(f"final_mat[{i}][{j}] = {final_mat[i, j]}")
+            input("Press Enter to continue...")  # Pause after each element
